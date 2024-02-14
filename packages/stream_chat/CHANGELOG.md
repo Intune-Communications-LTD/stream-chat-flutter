@@ -1,10 +1,11 @@
-## Unreleased
+## 8.0.0-beta.2
 
-🐞 Fixed
+- Aligned version with other Stream Chat packages
 
-- [[#1837]](https://github.com/GetStream/stream-chat-flutter/issues/1837) Delete image and file 
-  attachments from the CDN, when the message get's hard deleted.
+## 8.0.0-beta.1
 
+- Updated minimum supported `SDK` version to Flutter 3.16/Dart 3.2
+  
 ## 7.0.1
 
 🐞 Fixed

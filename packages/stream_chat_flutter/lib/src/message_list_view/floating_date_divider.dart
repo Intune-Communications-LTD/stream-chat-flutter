@@ -16,7 +16,10 @@ class FloatingDateDivider extends StatelessWidget {
     required this.itemCount,
     this.isThreadConversation = false,
     this.dateDividerBuilder,
+    this.topPadding,
   });
+
+  final double? topPadding;
 
   /// true if this is a thread conversation
   final bool isThreadConversation;
@@ -39,7 +42,7 @@ class FloatingDateDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 20,
+      top: topPadding ?? 20,
       left: 0,
       right: 0,
       child: BetterStreamBuilder<Iterable<ItemPosition>>(

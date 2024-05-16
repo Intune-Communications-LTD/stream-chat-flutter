@@ -1,3 +1,32 @@
+## 8.0.0-beta.2
+
+- Aligned version with other Stream Chat packages
+
+## 8.0.0-beta.1
+
+- Updated minimum supported `SDK` version to Flutter 3.16/Dart 3.2
+  
+## 7.0.1
+
+🐞 Fixed
+
+- [[#1811]](https://github.com/GetStream/stream-chat-flutter/issues/1811) Bumped `UUID` dependency to `^4.2.1`. This
+  **might** produce a **breaking change** if you your code depends in `UUID` `3.x.x` directly or indirectly.
+
+## 7.0.0
+  
+- 🛑️ Breaking
+
+- Removed deprecated `channelQuery.sort` property. Use `channelStateSort` instead.
+- Removed deprecated `RetryPolicy.retryTimeout` property. Use `delayFactor` instead.
+- Removed deprecated `StreamChatNetworkError.fromDioError` constructor. Use `StreamChatNetworkError.fromDioException`
+  instead.
+- Removed deprecated `MessageSendingStatus` enum. Use `MessageState` instead.
+
+🔄 Changed
+
+- Updated minimum supported `SDK` version to Flutter 3.13/Dart 3.1
+  
 # 6.10.0
 
 🐞 Fixed

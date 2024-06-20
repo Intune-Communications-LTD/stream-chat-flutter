@@ -94,7 +94,7 @@ class _StreamGalleryFooterState extends State<StreamGalleryFooter> {
                     final url = attachment.imageUrl ??
                         attachment.assetUrl ??
                         attachment.thumbUrl!;
-                    final type = attachment.type == 'image'
+                    final type = attachment.type == AttachmentType.image
                         ? 'jpg'
                         : url.split('?').first.split('.').last;
                     final request = await HttpClient().getUrl(Uri.parse(url));
@@ -217,16 +217,15 @@ class _StreamGalleryFooterState extends State<StreamGalleryFooter> {
                         widget.mediaAttachmentPackages[index];
                     final attachment = attachmentPackage.attachment;
                     final message = attachmentPackage.message;
-                    if (attachment.type == 'video') {
+                    if (attachment.type == AttachmentType.video) {
                       media = MouseRegion(
                         cursor: SystemMouseCursors.click,
                         child: GestureDetector(
                           onTap: () => widget.mediaSelectedCallBack!(index),
                           child: AspectRatio(
                             aspectRatio: 1,
-                            child: StreamVideoThumbnailImage(
-                              video:
-                                  attachment.file?.path ?? attachment.assetUrl,
+                            child: StreamVideoAttachmentThumbnail(
+                              video: attachment,
                             ),
                           ),
                         ),

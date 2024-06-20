@@ -1,3 +1,36 @@
+## 7.2.2
+
+- Updated `stream_chat_flutter` dependency to [`7.2.2`](https://pub.dev/packages/stream_chat/changelog).
+
+## 7.2.1
+
+- Updated `stream_chat_flutter` dependency to [`7.2.1`](https://pub.dev/packages/stream_chat/changelog).
+  
+## 7.2.0-hotfix.1
+
+- Updated `stream_chat_flutter` dependency to [`7.2.0-hotfix.1`](https://pub.dev/packages/stream_chat/changelog).
+
+# 7.2.0
+
+* Updated `stream_chat_flutter` dependency to [`7.2.0`](https://pub.dev/packages/stream_chat_flutter/changelog).
+  
+## 7.1.0
+
+* Updated `stream_chat_flutter` dependency to [`7.1.0`](https://pub.dev/packages/stream_chat_flutter/changelog).
+
+## 7.0.2
+
+* Updated `stream_chat_flutter` dependency to [`7.0.2`](https://pub.dev/packages/stream_chat_flutter/changelog).
+
+## 7.0.1
+
+* Updated `stream_chat_flutter` dependency to [`7.0.1`](https://pub.dev/packages/stream_chat_flutter/changelog).
+
+## 7.0.0
+
+* Updated minimum supported `SDK` version to Flutter 3.13/Dart 3.1
+* Updated `stream_chat_flutter` dependency to [`7.0.0`](https://pub.dev/packages/stream_chat_flutter/changelog).
+
 ## 5.12.0
 
 * Updated `stream_chat_flutter` dependency to [`6.12.0`](https://pub.dev/packages/stream_chat_flutter/changelog).

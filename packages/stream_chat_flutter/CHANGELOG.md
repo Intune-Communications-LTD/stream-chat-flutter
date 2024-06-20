@@ -1,6 +1,138 @@
+## 7.2.2
+
+✅ Added
+
+- Added `customAttachmentBuilders` parameter for `StreamAttachmentWidgetBuilder.defaultBuilders`.
+- `attachmentBuilders` parameter for `StreamMessageWidget` now only expects custom builders.
+- Added `StreamMediaAttachmentBuilder` widget to show media attachments in a message.
+
+🐞 Fixed
+
+- Added export for `message_widget_content_components.dart` to allow for easier customization of message content components.
+- Fixed error when channel image is not set.
+- Fixes reaction picker tail showing up unexpectedly.
+- Copying a message now replaces the User IDs with user names.
+- Exported thumbnail widgets from the package.
+- Extends predicates for sending and clearing messages to mobile.
+
+🔄 Changed
+
+- Updated `stream_chat_flutter_core` dependency to [`7.2.2`](https://pub.dev/packages/stream_chat/changelog).
+
+## 7.2.1
+
+✅ Added
+- Added `VoiceRecordingAttachmentBuilder`, for displaying voice recording attachments in the chat.
+
+🐞 Fixed
+- Fixed wrong calculation of the last unread message indicator.
+
+## 7.2.0-hotfix.1
+
+  🔄 Changed
+  - Updated `stream_chat_flutter_core` dependency to [`7.2.0-hotfix.1`](https://pub.dev/packages/stream_chat/changelog).
+
+
+## 7.2.0
+
+✅ Added
+`StreamMessageListView` will now by default show unread indicator floating on top of the message list that will scroll to last read message when tapped and mark channel as unread when dismissed.
+
+- Added `showUnreadIndicator` parameter to `StreamMessageListView` that controls visibility of new channel unread indicator
+- Added `unreadIndicatorBuilder` parameter to `StreamMessageListView` that allows to provide custom unread indicator builder
+- Added `markReadWhenAtTheBottom` parameter to `StreamMessageListView` that will toggle, previously default, behaviour of marking channel as read when message list is scrolled to the bottom (now default is `false`)
+- Added `showUnreadCountOnScrollToBottom` parameter to `StreamMessageListView` that will toggle, previously shown by default, unread messages counter on the scroll to bottom button (no default is `false`)
+
+Added Mark as Unread option to `StreamMessageWidget` context menu that will show for non-thread messages of other users and mark channel as unread from selected message onwards.
+
+- Added `showMarkUnreadMessage` to  `StreamMessageWidget` that controls visibility of Mark as Unread option.
+
+## 7.1.0
+
+🐞 Fixed
+- Fixed quoted message having 0 bottom padding. All sides now have 8 padding 
+
+🔄 Changed
+- Updated `photo_manager` dependency to `^3.0.0`
+- Updated `lottie` to `>=2.6.0 <4.0.0`
+
+## 7.0.2
+
+✅ Added
+
+- Added `ActionsBuilder` signature for function which will return default actions and allows past custom actions.
+- Added `spaceBetweenActions` parameter for `StreamMessageInput` to control distance between actions
+
+🐞 Fixed
+- Removed double focus on `StreamMessageInput` when `focusNode` is provided for web and desktop.
+- Optionally call `onThreadTap` in `BottomRow` to avoid `Null check operator used on a null value`
+
+## 7.0.1
+
+🐞 Fixed
+
+- [[#1804]](https://github.com/GetStream/stream-chat-flutter/issues/1804) Fixed 
+  `StreamAttachmentWidgetBuilder`` is not accessible in 7.0.0.
+- Updated `stream_chat_flutter_core` dependency
+  to [`7.0.1`](https://pub.dev/packages/stream_chat_flutter_core/changelog).
+
+## 7.0.0
+
+🛑️ Breaking
+
+- Removed deprecated `ChannelPreview` widget. Use `StreamChannelListTile` instead.
+- Removed deprecated `ChannelPreviewBuilder`, Use `StreamChannelListViewIndexedWidgetBuilder` instead.
+- Removed deprecated `StreamUserItem` widget. Use `StreamUserListTile` instead.
+- Removed deprecated `ReturnActionType` enum, No longer used.
+- Removed deprecated `StreamMessageInput.attachmentThumbnailBuilders` parameter. Use
+  `StreamMessageInput.mediaAttachmentBuilder` instead.
+- Removed deprecated `MessageListView.onMessageSwiped` parameter. Try wrapping the `MessageWidget` with
+  a `Swipeable`, `Dismissible` or a custom widget to achieve the swipe to reply behaviour.
+- Removed deprecated `MessageWidget.showReactionPickerIndicator` parameter. Use `MessageWidget.showReactionPicker`
+  instead.
+- Removed deprecated `MessageWidget.bottomRowBuilder` parameter. Use `MessageWidget.bottomRowBuilderWithDefaultWidget`
+  instead.
+- Removed deprecated `MessageWidget.deletedBottomRowBuilder` parameter.
+  Use `MessageWidget.deletedBottomRowBuilderWithDefaultWidget` instead.
+- Removed deprecated `MessageWidget.usernameBuilder` parameter. Use `MessageWidget.usernameBuilderWithDefaultWidget`
+  instead.
+- Removed deprecated `MessageTheme.linkBackgroundColor` parameter. Use `MessageTheme.urlAttachmentBackgroundColor`
+  instead.
+- Removed deprecated `showConfirmationDialog` method. Use `showConfirmationBottomSheet` instead.
+- Removed deprecated `showInfoDialog` method. Use `showInfoBottomSheet` instead.
+- Removed deprecated `wrapAttachmentWidget` method. Use `WrapAttachmentWidget` class instead.
+- Removed deprecated `showReactionPickerTail` parameter. Use `showReactionPicker` instead.
+
+✅ Added
+
+- Added support for `StreamMessageInput.contentInsertionConfiguration` to specify the content insertion configuration.
+  [#1613](https://github.com/GetStream/stream-chat-flutter/issues/1613)
+
+  ```dart
+  StreamMessageInput(
+    ...,
+    contentInsertionConfiguration: ContentInsertionConfiguration(
+      onContentInserted: (content) {
+        // Do something with the content.
+        controller.addAttachment(...);
+      },
+    ),
+  )
+  ```
+
+🔄 Changed
+
+- Updated `jiffy` dependency to `^6.2.1`.
+- Updated minimum supported `SDK` version to Flutter 3.13/Dart 3.1
+- Updated `stream_chat_flutter_core` dependency
+  to [`7.0.0`](https://pub.dev/packages/stream_chat_flutter_core/changelog).
+
 # 6.12.0
 
 🐞 Fixed
+
+- Fix render overflow issue with `StreamTypingIndicator`. It now uses `Flexible` 
+  inside `Row`.
 
 - [[#1759]](https://github.com/GetStream/stream-chat-flutter/issues/1759) Fixed
   The Reaction Picker is not being removed when I set showReactionPicker to false.
@@ -24,7 +156,7 @@
 - Added support for overriding the `MessageWidget.onReactionsHover` callback.
   > **Note**
   > Used only in desktop devices (web and desktop).
-
+  
 ## 6.9.0
 
 🐞 Fixed

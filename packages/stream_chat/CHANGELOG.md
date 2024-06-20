@@ -1,3 +1,56 @@
+## 7.2.2
+
+- Version to keep in sync with the rest of the packages
+
+## 7.2.1
+
+✅ Added
+- Added `voiceRecording` attachment type
+
+## 7.2.0-hotfix.1
+
+ - Version to keep in sync with the rest of the packages
+  
+## 7.2.0
+
+✅ Added
+- Added `markUnread` method to `Channel` that marks messages from the provided message id onwards as unread
+
+## 7.1.0
+
+🐞 Fixed
+- Fixes a thread message causing reply messages on the main thread to be considered deleted
+
+## 7.0.2
+
+🐞 Fixed
+
+- [[#1837]](https://github.com/GetStream/stream-chat-flutter/issues/1837) Delete image and file 
+  attachments from the CDN, when the message get's hard deleted.
+- [[#1819]](https://github.com/GetStream/stream-chat-flutter/issues/1819) Handle network errors
+  with String payload.
+
+## 7.0.1
+
+🐞 Fixed
+
+- [[#1811]](https://github.com/GetStream/stream-chat-flutter/issues/1811) Bumped `UUID` dependency to `^4.2.1`. This
+  **might** produce a **breaking change** if you your code depends in `UUID` `3.x.x` directly or indirectly.
+
+## 7.0.0
+  
+- 🛑️ Breaking
+
+- Removed deprecated `channelQuery.sort` property. Use `channelStateSort` instead.
+- Removed deprecated `RetryPolicy.retryTimeout` property. Use `delayFactor` instead.
+- Removed deprecated `StreamChatNetworkError.fromDioError` constructor. Use `StreamChatNetworkError.fromDioException`
+  instead.
+- Removed deprecated `MessageSendingStatus` enum. Use `MessageState` instead.
+
+🔄 Changed
+
+- Updated minimum supported `SDK` version to Flutter 3.13/Dart 3.1
+  
 # 6.10.0
 
 🐞 Fixed

@@ -461,13 +461,26 @@ class NnStreamChatLocalizations extends GlobalStreamChatLocalizations {
   String get viewLibrary => 'View library';
 
   @override
-  String unreadMessagesSeparatorText(int unreadCount) => 'New messages';
+  String unreadMessagesSeparatorText() => 'New messages';
 
   @override
   String get enableFileAccessMessage => 'Enable file access to continue';
 
   @override
   String get allowFileAccessMessage => 'Allow access to files';
+
+  @override
+  String get markAsUnreadLabel => 'Mark as unread';
+
+  @override
+  String unreadCountIndicatorLabel({required int unreadCount}) {
+    return '$unreadCount unread';
+  }
+
+  @override
+  String get markUnreadError =>
+      'Error marking message unread. Cannot mark unread messages older than'
+      ' the newest 100 channel messages.';
 }
 
 void main() async {

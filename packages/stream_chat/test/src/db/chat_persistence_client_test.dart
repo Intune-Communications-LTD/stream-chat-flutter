@@ -62,8 +62,6 @@ class TestPersistenceClient extends ChatPersistenceClient {
   @override
   Future<List<ChannelState>> getChannelStates(
           {Filter? filter,
-          @Deprecated('Use channelStateSort instead.')
-          List<SortOption<ChannelModel>>? sort,
           List<SortOption<ChannelState>>? channelStateSort,
           PaginationParams? paginationParams}) =>
       throw UnimplementedError();
@@ -216,7 +214,12 @@ void main() {
             latestReactions: [Reaction(type: 'test', user: user)],
           )
         ],
-        read: [Read(lastRead: DateTime.now(), user: user)],
+        read: [
+          Read(
+              lastRead: DateTime.now(),
+              user: user,
+              lastReadMessageId: 'last-test-message'),
+        ],
         members: [Member(user: user)],
       );
       persistenceClient.updateChannelStates([channelState]);

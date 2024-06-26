@@ -34,9 +34,25 @@ class StreamChatPersistenceClient extends ChatPersistenceClient {
     bool webUseExperimentalIndexedDb = false,
     LogHandlerFunction? logHandlerFunction,
   })  : _connectionMode = connectionMode,
+        cidsToDelete = <String>{},
+        deleted = <String>{},
         _webUseIndexedDbIfSupported = webUseExperimentalIndexedDb,
         _logger = Logger.detached('💽')..level = logLevel {
     _logger.onRecord.listen(logHandlerFunction ?? _defaultLogHandler);
+  }
+  final Set<String> cidsToDelete, deleted;
+
+  void addToDeleteQueue(List<String> cids) {
+    cidsToDelete.addAll(cids);
+    Future.delayed(const Duration(milliseconds: 500), () async {
+      if (cidsToDelete.isEmpty) return;
+      final temp = {...cidsToDelete}.where(
+        (element) => !deleted.contains(element),
+      );
+      cidsToDelete.clear();
+      _logger.info('Deleting channels from queue :: amount: ${temp.length}');
+      await deleteChannels(temp.toList());
+    });
   }
 
   /// [DriftChatDatabase] instance used by this client.
@@ -130,10 +146,23 @@ class StreamChatPersistenceClient extends ChatPersistenceClient {
   }
 
   @override
-  Future<void> deleteChannels(List<String> cids) {
+  Future<void> deleteChannels(List<String> cids) async {
+    if (cids.isEmpty) return;
     assert(_debugIsConnected, '');
-    _logger.info('deleteChannels');
-    return db!.channelDao.deleteChannelByCids(cids);
+    _logger.info('deleteChannels :: amount: ${cids.length}');
+    final count = await db!.channelDao.deleteChannelByCids(cids);
+    _logger.info('Deleted $count channels');
+    if (count == cids.length) {
+      deleted.addAll(cids);
+      return;
+    }
+    _logger.warning('Failed to delete all channels');
+    final currentCids = await getChannelCids();
+    final cidsToDelete =
+        cids.where((element) => !currentCids.contains(element)).toList();
+    final remainCids = cids.where(cidsToDelete.contains).toList();
+    if (remainCids.isEmpty) return;
+    addToDeleteQueue(remainCids);
   }
 
   @override

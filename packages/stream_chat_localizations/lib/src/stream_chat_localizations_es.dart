@@ -442,7 +442,7 @@ No es posible añadir más de $limit archivos adjuntos
   String get linkDisabledError => 'Los enlaces están deshabilitados';
 
   @override
-  String unreadMessagesSeparatorText(int unreadCount) => 'Nuevos mensajes';
+  String unreadMessagesSeparatorText() => 'Nuevos mensajes';
 
   @override
   String get enableFileAccessMessage => 'Habilite el acceso a los archivos'
@@ -450,4 +450,17 @@ No es posible añadir más de $limit archivos adjuntos
 
   @override
   String get allowFileAccessMessage => 'Permitir el acceso a los archivos';
+
+  @override
+  String get markAsUnreadLabel => 'Marcar como no leído';
+
+  @override
+  String unreadCountIndicatorLabel({required int unreadCount}) {
+    return '$unreadCount no leídos';
+  }
+
+  @override
+  String get markUnreadError =>
+      'Error al marcar el mensaje como no leído. No se pueden marcar mensajes'
+      ' no leídos más antiguos que los últimos 100 mensajes del canal.';
 }

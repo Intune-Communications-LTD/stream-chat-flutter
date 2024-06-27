@@ -435,7 +435,7 @@ class StreamChatLocalizationsHi extends GlobalStreamChatLocalizations {
   String get linkDisabledError => 'लिंक भेजना प्रतिबंधित';
 
   @override
-  String unreadMessagesSeparatorText(int unreadCount) => 'नए संदेश।';
+  String unreadMessagesSeparatorText() => 'नए संदेश।';
 
   @override
   String get enableFileAccessMessage => 'कृपया फ़ाइलों तक पहुंच सक्षम करें ताकि'
@@ -443,4 +443,17 @@ class StreamChatLocalizationsHi extends GlobalStreamChatLocalizations {
 
   @override
   String get allowFileAccessMessage => 'फाइलों तक पहुंच की अनुमति दें';
+
+  @override
+  String get markAsUnreadLabel => 'अपठित चिह्नित करें';
+
+  @override
+  String unreadCountIndicatorLabel({required int unreadCount}) {
+    return '$unreadCount अपठित';
+  }
+
+  @override
+  String get markUnreadError =>
+      'संदेश को अपठित मार्क करने में त्रुटि। सबसे नए 100 चैनल संदेश से पहले के'
+      ' सभी अपठित संदेशों को अपठित मार्क नहीं किया जा सकता है।';
 }

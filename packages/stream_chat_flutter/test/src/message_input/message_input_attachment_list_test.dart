@@ -37,7 +37,9 @@ void main() {
 
         // Expect 2 file attachments and 1 media attachment
         expect(find.byType(MessageInputFileAttachments), findsOneWidget);
+        expect(find.byType(StreamFileAttachment), findsNWidgets(2));
         expect(find.byType(MessageInputMediaAttachments), findsOneWidget);
+        expect(find.byType(StreamMediaAttachmentThumbnail), findsOneWidget);
       },
     );
 
@@ -111,7 +113,7 @@ void main() {
         );
 
         // Expect 2 file attachments
-        expect(find.byType(ClipRRect), findsNWidgets(2));
+        expect(find.byType(StreamFileAttachment), findsNWidgets(2));
       },
     );
 
@@ -184,6 +186,56 @@ void main() {
 
         // Expect an empty box
         expect(find.byType(SizedBox), findsOneWidget);
+      },
+    );
+  });
+
+  group('StreamMediaAttachmentBuilder tests', () {
+    testWidgets(
+      'StreamMediaAttachmentBuilder should render media attachment',
+      (WidgetTester tester) async {
+        final attachment = Attachment(type: 'media', id: 'media1');
+
+        await tester.pumpWidget(
+          wrapWithStreamChat(
+            StreamMediaAttachmentBuilder(
+              attachment: attachment,
+              onRemovePressed: (attachment) {},
+            ),
+          ),
+        );
+
+        // Expect one media attachment widget
+        expect(find.byType(StreamMediaAttachmentBuilder), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'StreamMediaAttachmentBuilder should call onRemovePressed callback',
+      (WidgetTester tester) async {
+        Attachment? removedAttachment;
+
+        final attachment = Attachment(type: 'file', id: 'file1');
+
+        await tester.pumpWidget(
+          wrapWithStreamChat(
+            StreamMediaAttachmentBuilder(
+              attachment: attachment,
+              onRemovePressed: (attachment) {
+                removedAttachment = attachment;
+              },
+            ),
+          ),
+        );
+
+        final removeButton = find.byType(RemoveAttachmentButton);
+
+        // Tap the remove button
+        await tester.tap(removeButton);
+        await tester.pump();
+
+        // Expect the onRemovePressed callback to be called with the attachment
+        expect(removedAttachment, attachment);
       },
     );
   });

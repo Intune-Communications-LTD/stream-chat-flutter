@@ -1,12 +1,44 @@
+import 'dart:io';
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_size_getter/file_input.dart'; // For compatibility with flutter web.
+import 'package:image_size_getter/image_size_getter.dart' hide Size;
 import 'package:stream_chat_flutter/src/localization/translations.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+
+int _byteUnitConversionFactor = 1024;
+
+/// int extensions
+extension IntExtension on int {
+  /// Parses int in bytes to human readable size. Like: 17 KB
+  /// instead of 17524 bytes;
+  String toHumanReadableSize() {
+    if (this <= 0) return '0 B';
+    const suffixes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    final i = (log(this) / log(_byteUnitConversionFactor)).floor();
+    final numberValue =
+        (this / pow(_byteUnitConversionFactor, i)).toStringAsFixed(2);
+    final suffix = suffixes[i];
+    return '$numberValue $suffix';
+  }
+}
+
+/// Durations extensions.
+extension DurationExtension on Duration {
+  /// Transforms Duration to a minutes and seconds time. Like: 04:13.
+  String toMinutesAndSeconds() {
+    final minutes = inMinutes.remainder(60).toString().padLeft(2, '0');
+    final seconds = inSeconds.remainder(60).toString().padLeft(2, '0');
+
+    return '$minutes:$seconds';
+  }
+}
 
 /// String extension
 extension StringExtension on String {
@@ -114,7 +146,7 @@ extension PlatformFileX on PlatformFile {
     final file = toAttachmentFile;
     final extraDataMap = <String, Object>{};
 
-    final mimeType = file.mimeType?.mimeType;
+    final mimeType = file.mediaType?.mimeType;
 
     if (mimeType != null) {
       extraDataMap['mime_type'] = mimeType;
@@ -151,7 +183,7 @@ extension XFileX on XFile {
 
     final extraDataMap = <String, Object>{};
 
-    final mimeType = this.mimeType ?? file.mimeType?.mimeType;
+    final mimeType = this.mimeType ?? file.mediaType?.mimeType;
 
     if (mimeType != null) {
       extraDataMap['mime_type'] = mimeType;
@@ -227,6 +259,7 @@ extension InputDecorationX on InputDecoration {
 extension BuildContextX on BuildContext {
   // ignore: public_member_api_docs
   double get textScaleFactor =>
+      // ignore: deprecated_member_use
       MediaQuery.maybeOf(this)?.textScaleFactor ?? 1.0;
 
   /// Retrieves current translations according to locale
@@ -367,7 +400,7 @@ extension MessageX on Message {
 
   /// Returns an approximation of message size
   double roughMessageSize(double? fontSize) {
-    var messageTextLength = min(text!.biggestLine().length, 65);
+    var messageTextLength = min(text?.biggestLine().length ?? 0, 65);
 
     if (quotedMessage != null) {
       var quotedMessageLength =
@@ -473,5 +506,87 @@ extension StreamSvgIconX on StreamSvgIcon {
   /// Converts the [StreamSvgIcon] to a [StreamIconThemeSvgIcon].
   StreamIconThemeSvgIcon toIconThemeSvgIcon() {
     return StreamIconThemeSvgIcon.fromStreamSvgIcon(this);
+  }
+}
+
+/// Useful extensions on [BoxConstraints].
+extension ConstraintsX on BoxConstraints {
+  /// Returns new box constraints that tightens the max width and max height
+  /// to the given [size].
+  BoxConstraints tightenMaxSize(Size? size) {
+    if (size == null) return this;
+    return copyWith(
+      maxWidth: clampDouble(size.width, minWidth, maxWidth),
+      maxHeight: clampDouble(size.height, minHeight, maxHeight),
+    );
+  }
+}
+
+/// Useful extensions on [Attachment].
+extension OriginalSizeX on Attachment {
+  /// Returns the size of the attachment if it is an image or giffy.
+  /// Otherwise, returns null.
+  Size? get originalSize {
+    // Return null if the attachment is not an image or giffy.
+    if (type != AttachmentType.image && type != AttachmentType.giphy) {
+      return null;
+    }
+
+    // Calculate size locally if the attachment is not uploaded yet.
+    final file = this.file;
+    if (file != null) {
+      ImageInput? input;
+      if (file.bytes != null) {
+        input = MemoryInput(file.bytes!);
+      } else if (file.path != null) {
+        input = FileInput(File(file.path!));
+      }
+
+      // Return null if the file does not contain enough information.
+      if (input == null) return null;
+
+      try {
+        final size = ImageSizeGetter.getSize(input);
+        if (size.needRotate) {
+          return Size(size.height.toDouble(), size.width.toDouble());
+        }
+        return Size(size.width.toDouble(), size.height.toDouble());
+      } catch (e, stk) {
+        debugPrint('Error getting image size: $e\n$stk');
+        return null;
+      }
+    }
+
+    // Otherwise, use the size provided by the server.
+    final width = originalWidth;
+    final height = originalHeight;
+    if (width == null || height == null) return null;
+    return Size(width.toDouble(), height.toDouble());
+  }
+}
+
+/// Useful extensions on [List<Message>].
+extension MessageListX on Iterable<Message> {
+  /// Returns the last unread message in the list.
+  /// Returns null if the list is empty or the userRead is null.
+  ///
+  /// The [userRead] is the last read message by the user.
+  ///
+  /// The last unread message is the last message in the list that is not
+  /// sent by the current user and is sent after the last read message.
+  Message? lastUnreadMessage(Read? userRead) {
+    if (isEmpty || userRead == null) return null;
+
+    if (first.createdAt.isAfter(userRead.lastRead) &&
+        last.createdAt.isBefore(userRead.lastRead)) {
+      return lastWhereOrNull(
+        (it) =>
+            it.user?.id != userRead.user.id &&
+            it.id != userRead.lastReadMessageId &&
+            it.createdAt.compareTo(userRead.lastRead) > 0,
+      );
+    }
+
+    return null;
   }
 }

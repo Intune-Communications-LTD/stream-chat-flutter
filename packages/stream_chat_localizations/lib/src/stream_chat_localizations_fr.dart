@@ -441,7 +441,7 @@ Limite de pièces jointes dépassée : il n'est pas possible d'ajouter plus de $
   String get linkDisabledError => 'Les liens sont désactivés';
 
   @override
-  String unreadMessagesSeparatorText(int unreadCount) => 'Nouveaux messages';
+  String unreadMessagesSeparatorText() => 'Nouveaux messages';
 
   @override
   String get enableFileAccessMessage =>
@@ -450,4 +450,18 @@ Limite de pièces jointes dépassée : il n'est pas possible d'ajouter plus de $
 
   @override
   String get allowFileAccessMessage => "Autoriser l'accès aux fichiers";
+
+  @override
+  String get markAsUnreadLabel => 'Marquer comme non lu';
+
+  @override
+  String unreadCountIndicatorLabel({required int unreadCount}) {
+    return '$unreadCount non lus';
+  }
+
+  @override
+  String get markUnreadError =>
+      'Erreur lors de la marque du message comme non lu. Impossible de marquer'
+      ' des messages non lus plus anciens que les 100 derniers messages'
+      ' du canal.';
 }

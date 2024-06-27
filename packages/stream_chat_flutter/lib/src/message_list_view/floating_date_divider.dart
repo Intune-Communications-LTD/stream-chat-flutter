@@ -17,10 +17,7 @@ class FloatingDateDivider extends StatelessWidget {
     required this.itemCount,
     this.isThreadConversation = false,
     this.dateDividerBuilder,
-    this.topPadding,
   });
-
-  final double? topPadding;
 
   /// true if this is a thread conversation
   final bool isThreadConversation;

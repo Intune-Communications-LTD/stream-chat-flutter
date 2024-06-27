@@ -845,7 +845,7 @@ class _StreamMessageListViewState extends State<StreamMessageListView> {
         ),
         if (widget.showFloatingDateDivider)
           Positioned(
-            top: 20,
+            top: widget.padding?.top ?? 20,
             left: 0,
             right: 0,
             child: FloatingDateDivider(
@@ -872,16 +872,6 @@ class _StreamMessageListViewState extends State<StreamMessageListView> {
               },
             ),
           ),
-        // if (widget.showFloatingDateDivider)
-        //   FloatingDateDivider(
-        //     itemCount: itemCount,
-        //     reverse: widget.reverse,
-        //     itemPositionListener: _itemPositionListener,
-        //     messages: messages,
-        //     dateDividerBuilder: widget.dateDividerBuilder,
-        //     isThreadConversation: _isThreadConversation,
-        //     topPadding: widget.padding?.top,
-        //   ),
         if (widget.showUnreadIndicator) _buildShowUnreadBottom(),
       ],
     );
